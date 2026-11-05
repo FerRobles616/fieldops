@@ -44,12 +44,12 @@ FEATURES
 HOW IT WORKS
 The app reads and writes to a local database first. Status changes, notes, and photos wait in an outbox and are pushed when the API is reachable. The app then pulls changes made by other users.
 
-DEMO ACCESS
-FieldOps is a portfolio demo with public demo accounts. Do not enter real customer data.
+TEST ACCESS
+This release includes public test accounts so reviewers and new users can explore without setup. Use test data only.
 Technician: tech@fieldops.dev / tech1234
 Administrator: admin@fieldops.dev / admin1234
 
-The demo API may take up to a minute to wake on the free hosting tier.
+The hosted demo may take up to a minute to start on the free hosting tier.
 ```
 
 ## App access instructions (Play Console)

@@ -9,8 +9,8 @@ listing copy are prepared in the repository.
 - [ ] Developer identity verification completed.
 - [ ] If this is a **new personal developer account**, plan for the closed-testing requirement:
       Google currently requires a closed test with at least 12 testers for 14 continuous days before
-      production access. Organization accounts may have different requirements; check the current
-      Play Console policy.
+      production access. The exact number is shown in Play Console and can change; verify it there.
+      Organization accounts may have different requirements.
 - [ ] A monitored contact email. Replace `REPLACE_WITH_YOUR_EMAIL` in
       [`listing.md`](listing.md) and add it in Play Console.
 - [ ] Decide whether to use a **Play App Signing** upload key (recommended). The local keystore is an
@@ -111,7 +111,8 @@ For CI, run **Actions → Android release (APK + AAB) → Run workflow** and dow
 ## 7. Closed testing
 
 - [ ] Create a **closed testing** track.
-- [ ] Add at least the required number of testers (12 for a new personal account, 14 continuous days).
+- [ ] Add at least the number of testers required by Play Console (commonly 12 for a new personal
+      account; verify the current requirement in the console) for 14 continuous days.
 - [ ] Give testers the demo credentials and the testing script above.
 - [ ] Collect feedback and fix critical issues.
 - [ ] If the app is rejected, read the policy reason and update the listing/privacy/data safety before

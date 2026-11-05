@@ -249,7 +249,8 @@ The Play Store package is prepared in [`docs/play-store`](docs/play-store/README
 - Privacy policy at `app/web/privacy.html`, published with GitHub Pages.
 
 The Play Console app itself still has to be created and the AAB uploaded; closed testing for a new
-personal account requires testers for 14 continuous days. The full manual path is in
+personal account requires testers for 14 continuous days (confirm the current tester count in Play
+Console). The full manual path is in
 [`docs/play-store/checklist.md`](docs/play-store/checklist.md).
 
 ## PostgreSQL with Docker
