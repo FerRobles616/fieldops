@@ -2,15 +2,18 @@
 
 Offline-first work order management for field teams.
 
-> **Status:** Day 8. FieldOps is live on GitHub Pages with a Render API and PostgreSQL. The `v1.0.0` APK is published on GitHub Releases. Play Store packaging and S3 photo storage are the next production steps.
+> **Status:** Day 9. FieldOps is live on GitHub Pages with a Render API and PostgreSQL. The `v1.0.0`
+> APK is published on GitHub Releases. A real upload keystore, signed AAB, privacy policy, mobile
+> screenshots, and Play Store listing copy are ready; Play Console submission and closed testing are
+> the remaining manual steps.
 
 [![CI](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml/badge.svg)](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/FerRobles616/fieldops)
 
-| Live demo | API docs | APK |
-|---|---|---|
-| [FerRobles616.github.io/fieldops](https://FerRobles616.github.io/fieldops/) | [fieldops-api-muep.onrender.com/docs](https://fieldops-api-muep.onrender.com/docs) | [v1.0.0 release](https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0) |
+| Live demo | API docs | APK | Play Store package |
+|---|---|---|---|
+| [FerRobles616.github.io/fieldops](https://FerRobles616.github.io/fieldops/) | [fieldops-api-muep.onrender.com/docs](https://fieldops-api-muep.onrender.com/docs) | [v1.0.0 release](https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0) | [docs/play-store](docs/play-store/README.md) |
 
 > The Render free instance sleeps after inactivity. The app sends a warm-up request on load, but the first API call can still take around 50 seconds.
 
@@ -49,7 +52,7 @@ The backend is intentionally modular: API routes, schemas, models, and services 
 - **Testing:** pytest, httpx2, Flutter test
 - **Quality:** Ruff, mypy, flutter analyze
 - **CI:** GitHub Actions
-- **Planned:** S3-compatible photo storage, public deployment, Play Store
+- **Planned:** S3-compatible photo storage, Play Store submission
 
 > The Flutter web build vendors `sqlite3.wasm` and `drift_worker.js` from the matching Drift 2.35.3 release. Update both together when upgrading Drift.
 
@@ -224,15 +227,30 @@ Backend tests use an in-memory SQLite database. The CI pipeline also runs migrat
 
 - **Web demo:** <https://FerRobles616.github.io/fieldops/>
 - **API docs:** <https://fieldops-api-muep.onrender.com/docs>
-- **APK:** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0>
+- **APK (legacy debug-signed sideload):** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0>
 
 The project is deployment-ready:
 
 - **API:** Render Blueprint (`render.yaml`) with PostgreSQL. Click the **Deploy to Render** button above.
 - **Web demo:** GitHub Pages workflow in `.github/workflows/deploy-web.yml`. The `API_BASE_URL` repository variable points to the Render URL.
-- **APK:** `.github/workflows/android.yml` builds a release APK on demand or on `v*` tags.
+- **Android:** `.github/workflows/android.yml` builds a release APK and a signed AAB on demand or on `v*` tags. The AAB is the Play Store artifact.
+- **Privacy policy:** <https://FerRobles616.github.io/fieldops/privacy.html> (deployed with the web build).
 
 See [`docs/deploy.md`](docs/deploy.md) for the full guide, security notes, and troubleshooting.
+
+### Google Play
+
+The Play Store package is prepared in [`docs/play-store`](docs/play-store/README.md):
+
+- Real 4096-bit upload keystore (kept outside the repository; GitHub Actions secrets configured).
+- Signed AAB built and verified locally, plus an Android workflow for future releases.
+- 512×512 icon, 1024×500 feature graphic, and three 1080×1920 phone screenshots.
+- Listing copy, data-safety answers, content-rating notes, and a closed-testing checklist.
+- Privacy policy at `app/web/privacy.html`, published with GitHub Pages.
+
+The Play Console app itself still has to be created and the AAB uploaded; closed testing for a new
+personal account requires testers for 14 continuous days. The full manual path is in
+[`docs/play-store/checklist.md`](docs/play-store/checklist.md).
 
 ## PostgreSQL with Docker
 
@@ -275,6 +293,7 @@ fieldops/
 │   └── docker-compose.yml
 ├── docs/
 │   ├── adr/              # Architecture decision records
+│   ├── play-store/       # Listing copy, assets, data safety, checklist
 │   └── screenshots/      # Login, work order list, offline sync
 └── .github/workflows/
 ```
@@ -294,8 +313,10 @@ fieldops/
 - [x] Public repository and green CI
 - [x] Deployment configs and Android APK build
 - [x] Live demo (Render + GitHub Pages)
-- [x] APK release (`v1.0.0`, debug-signed)
-- [ ] Play Store closed testing
+- [x] APK release (`v1.0.0`, debug-signed sideload)
+- [x] Real upload keystore, signed AAB, and Android release workflow
+- [x] Privacy policy, Play Store assets, listing copy, and data-safety answers
+- [ ] Play Store closed testing and production release
 
 ## Decisions
 

@@ -45,6 +45,9 @@ jobs:
           --base-href "/${{ github.event.repository.name }}/"
           --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
 
+      - name: Copy privacy policy
+        run: cp web/privacy.html build/web/privacy.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

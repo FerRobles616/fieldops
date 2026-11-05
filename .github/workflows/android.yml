@@ -1,4 +1,4 @@
-name: Android APK
+name: Android release (APK + AAB)
 
 on:
   workflow_dispatch:
@@ -17,14 +17,17 @@ jobs:
         working-directory: app
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - name: Set up Java
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.47.7"
           cache: true
@@ -36,23 +39,67 @@ jobs:
             exit 1
           fi
 
-      - run: flutter pub get
+      - name: Configure release signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing Android signing secret: $name"
+              exit 1
+            fi
+          done
+
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload.jks"
+          cat > android/key.properties <<EOF
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyPassword=$ANDROID_KEY_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          storeFile=$RUNNER_TEMP/upload.jks
+          EOF
+          chmod 600 "$RUNNER_TEMP/upload.jks" android/key.properties
+
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Build APK
         run: >-
           flutter build apk --release
           --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: fieldops-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
+      - name: Build AAB
+        run: >-
+          flutter build appbundle --release
+          --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
 
-      - uses: softprops/action-gh-release@v2
+      - name: Verify release artifacts
+        run: |
+          test -f build/app/outputs/flutter-apk/app-release.apk
+          test -f build/app/outputs/bundle/release/app-release.aab
+          jarsigner -verify build/app/outputs/bundle/release/app-release.aab
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
+          ls -lh build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload Android artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fieldops-android-release
+          path: |
+            app/build/app/outputs/flutter-apk/app-release.apk
+            app/build/app/outputs/bundle/release/app-release.aab
+
+      - name: Publish GitHub release
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
           name: FieldOps ${{ github.ref_name }}
-          files: app/build/app/outputs/flutter-apk/app-release.apk
+          files: |
+            app/build/app/outputs/flutter-apk/app-release.apk
+            app/build/app/outputs/bundle/release/app-release.aab
           body: |
             FieldOps ${{ github.ref_name }} — offline-first work order management.
 
@@ -60,7 +107,7 @@ jobs:
             - Offline status updates and photo capture
             - Admin console for customers, work orders, and assignments
             - PDF reports with embedded photos
+            - APK for direct installation and AAB for Google Play
 
-            The APK points at the demos API configured in `API_BASE_URL`.
-            It is signed with the debug keystore; configure a release keystore
-            before publishing to Google Play.
+            Both artifacts are signed with the FieldOps upload key. The AAB is
+            intended for Play Console; the APK is the direct-install fallback.

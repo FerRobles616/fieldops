@@ -99,14 +99,52 @@ flutter build web --release \
 
 If the repository is not named `fieldops`, the `--base-href` is generated from the repository name automatically. For a user site (`<user>.github.io`), change the base href to `/`.
 
-## 4. Build the APK
+## 4. Build the Android release
 
-### Locally
+### Signing key
+
+The release build reads `app/android/key.properties` and signs with the upload keystore when the file
+exists. The local key lives outside the repository:
+
+```text
+~/.config/fieldops/android-upload.jks
+~/.config/fieldops/key.properties
+```
+
+GitHub Actions reads the equivalent values from repository secrets:
+`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and
+`ANDROID_KEY_PASSWORD`. Never commit the keystore, `key.properties`, or the base64 file.
+
+Use Play App Signing and treat this as the **upload key**. Back it up before the first upload.
+
+### AAB for Google Play (recommended)
+
+```bash
+cd app
+flutter build appbundle --release \
+  --dart-define=API_BASE_URL=https://fieldops-api-muep.onrender.com
+```
+
+The AAB is written to:
+
+```text
+app/build/app/outputs/bundle/release/app-release.aab
+```
+
+Verify the signature:
+
+```bash
+jarsigner -verify app/build/app/outputs/bundle/release/app-release.aab
+```
+
+Upload the AAB to Play Console, not the APK.
+
+### APK for direct installation
 
 ```bash
 cd app
 flutter build apk --release \
-  --dart-define=API_BASE_URL=https://fieldops-api.onrender.com
+  --dart-define=API_BASE_URL=https://fieldops-api-muep.onrender.com
 ```
 
 The APK is written to:
@@ -115,12 +153,17 @@ The APK is written to:
 app/build/app/outputs/flutter-apk/app-release.apk
 ```
 
+Because it is signed with the upload key, it is not an update path for the old debug-signed `v1.0.0`
+APK; users of the old sideload build need to uninstall it first.
+
 ### With GitHub Actions
 
-- Run the **Android APK** workflow manually, or push a tag such as `v1.0.0`.
-- The APK is uploaded as an artifact and attached to the GitHub Release for tag builds.
+- Run **Actions → Android release (APK + AAB) → Run workflow**, or push a tag such as `v1.0.1`.
+- The workflow builds both artifacts, verifies the AAB signature, uploads them as the
+  `fieldops-android-release` artifact, and attaches both to a tagged GitHub Release.
+- The workflow fails if the signing secrets are missing.
 
-> The current Gradle configuration signs release builds with the debug keystore. Create a real keystore and configure `signingConfigs` before publishing to Google Play. Play Store closed testing also requires a developer account, a privacy policy, and the required number of testers.
+The full Play Store package is documented in [`docs/play-store/README.md`](play-store/README.md).
 
 ## 5. Demo credentials
 
@@ -151,5 +194,9 @@ These accounts are intentionally public for the portfolio demo. Do not store rea
 - [ ] Restrict `CORS_ORIGINS` to the web demo origin
 - [ ] Replace demo accounts or disable the public seed
 - [ ] Enable Render health checks and alerts
-- [ ] Configure a real Android keystore and Play Store listing
-- [ ] Add a privacy policy if the app is published
+- [x] Real Android upload keystore and signing secrets
+- [x] Signing configured for release AAB/APK builds
+- [x] Privacy policy added at `app/web/privacy.html`
+- [ ] Verify the public privacy URL after the Pages deploy
+- [ ] Upload the signed AAB to Play Console
+- [ ] Complete Play Store closed testing and production rollout (see `docs/play-store/checklist.md`)
