@@ -2,18 +2,17 @@
 
 Offline-first work order management for field teams.
 
-> **Status:** Day 9. FieldOps is live on GitHub Pages with a Render API and PostgreSQL. The `v1.0.0`
-> APK is published on GitHub Releases. A real upload keystore, signed AAB, privacy policy, mobile
-> screenshots, and Play Store listing copy are ready; Play Console submission and closed testing are
-> the remaining manual steps.
+> **Status:** Day 9. FieldOps is live on GitHub Pages with a Render API and PostgreSQL. The signed
+> `v1.0.1` release contains the APK and Play-ready AAB. Play Store submission and closed testing are
+> optional remaining manual steps.
 
 [![CI](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml/badge.svg)](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/FerRobles616/fieldops)
 
-| Live demo | API docs | APK | Play Store package |
+| Live demo | API docs | Signed release | Play Store package |
 |---|---|---|---|
-| [FerRobles616.github.io/fieldops](https://FerRobles616.github.io/fieldops/) | [fieldops-api-muep.onrender.com/docs](https://fieldops-api-muep.onrender.com/docs) | [v1.0.0 release](https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0) | [docs/play-store](docs/play-store/README.md) |
+| [FerRobles616.github.io/fieldops](https://FerRobles616.github.io/fieldops/) | [fieldops-api-muep.onrender.com/docs](https://fieldops-api-muep.onrender.com/docs) | [v1.0.1 release](https://github.com/FerRobles616/fieldops/releases/tag/v1.0.1) | [docs/play-store](docs/play-store/README.md) |
 
 > The Render free instance sleeps after inactivity. The app sends a warm-up request on load, but the first API call can still take around 50 seconds.
 
@@ -227,7 +226,8 @@ Backend tests use an in-memory SQLite database. The CI pipeline also runs migrat
 
 - **Web demo:** <https://FerRobles616.github.io/fieldops/>
 - **API docs:** <https://fieldops-api-muep.onrender.com/docs>
-- **APK (legacy debug-signed sideload):** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0>
+- **Signed release:** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.1> (APK + AAB)
+- **Legacy debug-signed APK:** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0>
 
 The project is deployment-ready:
 
@@ -315,6 +315,7 @@ fieldops/
 - [x] Deployment configs and Android APK build
 - [x] Live demo (Render + GitHub Pages)
 - [x] APK release (`v1.0.0`, debug-signed sideload)
+- [x] Signed GitHub release (`v1.0.1`, APK + AAB)
 - [x] Real upload keystore, signed AAB, and Android release workflow
 - [x] Privacy policy, Play Store assets, listing copy, and data-safety answers
 - [ ] Play Store closed testing and production release

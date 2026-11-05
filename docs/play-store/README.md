@@ -8,8 +8,9 @@ This directory contains the Play Store materials and the release checklist for F
 | --- | --- |
 | Upload keystore | Created locally on 2026-11-05; not in the repository |
 | GitHub Actions signing secrets | Configured |
-| Signed AAB | Built; available from the Android release workflow artifact |
-| Signed APK | Built by the same workflow |
+| Signed AAB | Built; available from the `v1.0.1` GitHub release and the Android workflow artifact |
+| Signed APK | Built; available from the `v1.0.1` GitHub release |
+| Signed GitHub release | https://github.com/FerRobles616/fieldops/releases/tag/v1.0.1 |
 | Privacy policy | `app/web/privacy.html`, published with GitHub Pages |
 | Phone screenshots | 3 captures at 1080 × 1920 |
 | Feature graphic | 1024 × 500 |
@@ -73,7 +74,7 @@ releases.
 
 - **App name:** FieldOps
 - **Package:** `com.fieldops.app`
-- **Version:** `1.0.0` (`versionCode` 1)
+- **Version:** `1.0.1` (`versionCode` 2)
 - **Category:** Business
 - **Privacy policy:** https://FerRobles616.github.io/fieldops/privacy.html (after the Pages deploy)
 - **Contact email:** replace the placeholder in `listing.md` with a monitored address

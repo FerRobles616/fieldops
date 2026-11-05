@@ -1,7 +1,7 @@
 name: fieldops_app
 description: "Offline-first work order management for field teams."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.13.5

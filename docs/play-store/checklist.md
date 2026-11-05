@@ -24,6 +24,7 @@ listing copy are prepared in the repository.
 - [x] GitHub Actions signing secrets configured.
 - [x] Release Gradle config uses the upload key when `app/android/key.properties` exists.
 - [x] Signed AAB built and verified locally with `jarsigner`.
+- [x] Signed APK and AAB published in the `v1.0.1` GitHub release.
 - [x] Android workflow builds both APK and AAB and verifies the AAB signature.
 - [ ] After any icon, version, or code change, rebuild the AAB and re-verify it.
 - [ ] Back up the keystore and properties in a password manager. **Do not commit them.**

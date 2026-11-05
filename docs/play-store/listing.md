@@ -104,13 +104,14 @@ The app is a business tool and is not directed to children.
 - **Financial features:** No.
 - **Health features:** No.
 
-## Release notes for 1.0.0
+## Release notes for 1.0.1
 
 ```text
-Initial release.
+Initial signed release.
 - Offline-first work order management for field technicians
 - Local cache and outbox sync with conflict protection
 - Photo capture and PDF work reports
 - Customer and work order administration
 - Role-based access for technicians and admins
+- Real upload-key signing; Play Store AAB included
 ```
