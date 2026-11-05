@@ -1,0 +1,63 @@
+name: Deploy web demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: vars.API_BASE_URL != ''
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate API URL
+        run: |
+          if [ -z "${{ vars.API_BASE_URL }}" ]; then
+            echo "Set the repository variable API_BASE_URL to the deployed API URL."
+            exit 1
+          fi
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.7"
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Build web
+        run: >-
+          flutter build web --release
+          --base-href "/${{ github.event.repository.name }}/"
+          --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/build/web
+
+  deploy:
+    if: vars.API_BASE_URL != ''
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
