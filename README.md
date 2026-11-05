@@ -2,11 +2,17 @@
 
 Offline-first work order management for field teams.
 
-> **Status:** Day 7. The project is public and CI is green. Deployment is prepared with a Render Blueprint, a GitHub Pages workflow, and an Android APK workflow. The live demo is pending a Render account connection.
+> **Status:** Day 8. FieldOps is live on GitHub Pages with a Render API and PostgreSQL. The `v1.0.0` APK is published on GitHub Releases. Play Store packaging and S3 photo storage are the next production steps.
 
 [![CI](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml/badge.svg)](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/FerRobles616/fieldops)
+
+| Live demo | API docs | APK |
+|---|---|---|
+| [FerRobles616.github.io/fieldops](https://FerRobles616.github.io/fieldops/) | [fieldops-api-muep.onrender.com/docs](https://fieldops-api-muep.onrender.com/docs) | [v1.0.0 release](https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0) |
+
+> The Render free instance sleeps after inactivity. The app sends a warm-up request on load, but the first API call can still take around 50 seconds.
 
 ![FieldOps login screen](docs/screenshots/login-web.png)
 
@@ -214,10 +220,16 @@ Backend tests use an in-memory SQLite database. The CI pipeline also runs migrat
 
 ## Deployment
 
+**Live deployment:**
+
+- **Web demo:** <https://FerRobles616.github.io/fieldops/>
+- **API docs:** <https://fieldops-api-muep.onrender.com/docs>
+- **APK:** <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0>
+
 The project is deployment-ready:
 
 - **API:** Render Blueprint (`render.yaml`) with PostgreSQL. Click the **Deploy to Render** button above.
-- **Web demo:** GitHub Pages workflow in `.github/workflows/deploy-web.yml`. Set the repository variable `API_BASE_URL` to the Render URL and run the workflow.
+- **Web demo:** GitHub Pages workflow in `.github/workflows/deploy-web.yml`. The `API_BASE_URL` repository variable points to the Render URL.
 - **APK:** `.github/workflows/android.yml` builds a release APK on demand or on `v*` tags.
 
 See [`docs/deploy.md`](docs/deploy.md) for the full guide, security notes, and troubleshooting.
@@ -281,7 +293,8 @@ fieldops/
 - [x] Admin console for customers, work orders, and assignments
 - [x] Public repository and green CI
 - [x] Deployment configs and Android APK build
-- [ ] Live demo (Render + GitHub Pages)
+- [x] Live demo (Render + GitHub Pages)
+- [x] APK release (`v1.0.0`, debug-signed)
 - [ ] Play Store closed testing
 
 ## Decisions

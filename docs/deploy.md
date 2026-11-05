@@ -1,5 +1,16 @@
 # Deployment guide
 
+## Current live deployment
+
+| Piece | URL |
+|---|---|
+| Web demo | <https://FerRobles616.github.io/fieldops/> |
+| API | <https://fieldops-api-muep.onrender.com> |
+| API docs | <https://fieldops-api-muep.onrender.com/docs> |
+| APK `v1.0.0` | <https://github.com/FerRobles616/fieldops/releases/tag/v1.0.0> |
+
+The Render service name is `fieldops-api`, but Render assigned the suffix `-muep` because the base name was taken. A new deployment may get a different URL; update the `API_BASE_URL` repository variable if it does.
+
 FieldOps deploys as two independent pieces:
 
 - **API:** FastAPI + PostgreSQL on Render using the `render.yaml` Blueprint.
