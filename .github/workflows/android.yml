@@ -51,4 +51,16 @@ jobs:
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          name: FieldOps ${{ github.ref_name }}
           files: app/build/app/outputs/flutter-apk/app-release.apk
+          body: |
+            FieldOps ${{ github.ref_name }} — offline-first work order management.
+
+            - Flutter app with Drift cache and outbox sync
+            - Offline status updates and photo capture
+            - Admin console for customers, work orders, and assignments
+            - PDF reports with embedded photos
+
+            The APK points at the demos API configured in `API_BASE_URL`.
+            It is signed with the debug keystore; configure a release keystore
+            before publishing to Google Play.
