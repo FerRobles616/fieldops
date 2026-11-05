@@ -2,9 +2,11 @@
 
 Offline-first work order management for field teams.
 
-> **Status:** Day 6. FieldOps has an admin console for creating customers and work orders, assigning technicians, and reviewing workload. PDF reports can be shared or downloaded from the detail screen. Public deployment and the APK are next.
+> **Status:** Day 7. The project is public and CI is green. Deployment is prepared with a Render Blueprint, a GitHub Pages workflow, and an Android APK workflow. The live demo is pending a Render account connection.
 
 [![CI](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml/badge.svg)](https://github.com/FerRobles616/fieldops/actions/workflows/ci.yml)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/FerRobles616/fieldops)
 
 ![FieldOps login screen](docs/screenshots/login-web.png)
 
@@ -210,6 +212,16 @@ dart run tool/smoke_api.dart
 
 Backend tests use an in-memory SQLite database. The CI pipeline also runs migrations and the seed script against PostgreSQL.
 
+## Deployment
+
+The project is deployment-ready:
+
+- **API:** Render Blueprint (`render.yaml`) with PostgreSQL. Click the **Deploy to Render** button above.
+- **Web demo:** GitHub Pages workflow in `.github/workflows/deploy-web.yml`. Set the repository variable `API_BASE_URL` to the Render URL and run the workflow.
+- **APK:** `.github/workflows/android.yml` builds a release APK on demand or on `v*` tags.
+
+See [`docs/deploy.md`](docs/deploy.md) for the full guide, security notes, and troubleshooting.
+
 ## PostgreSQL with Docker
 
 Docker is optional for local development. To run the API and PostgreSQL together:
@@ -267,7 +279,9 @@ fieldops/
 - [x] Offline photo capture with queued uploads
 - [x] PDF reports with order details and photos
 - [x] Admin console for customers, work orders, and assignments
-- [ ] Public demo and APK
+- [x] Public repository and green CI
+- [x] Deployment configs and Android APK build
+- [ ] Live demo (Render + GitHub Pages)
 - [ ] Play Store closed testing
 
 ## Decisions
